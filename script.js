@@ -40,7 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const exampleBtn = document.getElementById('exampleBtn');
     const resetBtn = document.getElementById('resetBtn');
     const infoBtn = document.getElementById('infoBtn');
-    const exportBtn = document.getElementById('exportBtn');
+    const exportFreqBtn = document.getElementById('exportFreqBtn');
+    const exportCumulBtn = document.getElementById('exportCumulBtn');
     const resultsSection = document.getElementById('resultsSection');
     
     // Stats Elements
@@ -54,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Chart instances
     let histogramChart = null;
     let polygonChart = null;
+    let ogiveChart = null;
     let combinedChart = null;
     
     // Initialize modal
@@ -64,7 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
     exampleBtn.addEventListener('click', loadExampleData);
     resetBtn.addEventListener('click', resetForm);
     infoBtn.addEventListener('click', () => infoModal.show());
-    exportBtn.addEventListener('click', exportTableToCSV);
+    exportFreqBtn.addEventListener('click', () => exportTableToCSV('frequencyTable', 'distribusi_frekuensi.csv'));
+    exportCumulBtn.addEventListener('click', () => exportTableToCSV('cumulativeTable', 'distribusi_kumulatif.csv'));
     
     // Parse input data
     function parseInputData(input) {
@@ -104,11 +107,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculate frequency distribution
         const frequencyDistribution = calculateFrequencyDistribution(data, classIntervals);
         
+        // Calculate cumulative distribution
+        const cumulativeDistribution = calculateCumulativeDistribution(frequencyDistribution);
+        
         // Display results
-        displayResults(stats, classCount, classWidth, frequencyDistribution);
+        displayResults(stats, classCount, classWidth, frequencyDistribution, cumulativeDistribution);
         
         // Create charts
-        createCharts(frequencyDistribution);
+        createCharts(frequencyDistribution, cumulativeDistribution);
         
         // Show results section
         resultsSection.style.display = 'block';
@@ -162,8 +168,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Calculate cumulative distribution
+    function calculateCumulativeDistribution(frequencyDistribution) {
+        let cumulativeFrequency = 0;
+        let cumulativeRelativeFrequency = 0;
+        
+        return frequencyDistribution.map(item => {
+            cumulativeFrequency += item.frequency;
+            cumulativeRelativeFrequency += item.relativeFrequency;
+            
+            return {
+                lower: item.lower,
+                upper: item.upper,
+                cumulativeFrequency,
+                cumulativeRelativeFrequency
+            };
+        });
+    }
+    
     // Display results
-    function displayResults(stats, classCount, classWidth, frequencyDistribution) {
+    function displayResults(stats, classCount, classWidth, frequencyDistribution, cumulativeDistribution) {
         // Update basic statistics
         dataCountEl.textContent = stats.count;
         minValueEl.textContent = stats.min;
@@ -173,8 +197,8 @@ document.addEventListener('DOMContentLoaded', function() {
         classWidthEl.textContent = classWidth;
         
         // Update frequency table
-        const tableBody = document.querySelector('#frequencyTable tbody');
-        tableBody.innerHTML = '';
+        const freqTableBody = document.querySelector('#frequencyTable tbody');
+        freqTableBody.innerHTML = '';
         
         frequencyDistribution.forEach(item => {
             const row = document.createElement('tr');
@@ -186,30 +210,50 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${item.relativeFrequency.toFixed(2)}%</td>
             `;
             
-            tableBody.appendChild(row);
+            freqTableBody.appendChild(row);
+        });
+        
+        // Update cumulative table
+        const cumulTableBody = document.querySelector('#cumulativeTable tbody');
+        cumulTableBody.innerHTML = '';
+        
+        cumulativeDistribution.forEach(item => {
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td>${item.lower.toFixed(1)} - ${item.upper.toFixed(1)}</td>
+                <td>${item.cumulativeFrequency}</td>
+                <td>${item.cumulativeRelativeFrequency.toFixed(2)}%</td>
+            `;
+            
+            cumulTableBody.appendChild(row);
         });
     }
     
     // Create charts
-    function createCharts(frequencyDistribution) {
+    function createCharts(frequencyDistribution, cumulativeDistribution) {
         // Prepare chart data
         const labels = frequencyDistribution.map(item => `${item.lower.toFixed(1)}-${item.upper.toFixed(1)}`);
         const midpoints = frequencyDistribution.map(item => item.midpoint);
         const frequencies = frequencyDistribution.map(item => item.frequency);
+        const cumulativeFrequencies = cumulativeDistribution.map(item => item.cumulativeFrequency);
         
         // Colors
         const primaryColor = '#0d6efd';
         const secondaryColor = '#6c757d';
+        const tertiaryColor = '#198754';
         const backgroundColor = 'rgba(13, 110, 253, 0.1)';
         
         // Destroy existing charts
         if (histogramChart) histogramChart.destroy();
         if (polygonChart) polygonChart.destroy();
+        if (ogiveChart) ogiveChart.destroy();
         if (combinedChart) combinedChart.destroy();
         
         // Get canvas contexts
         const histogramCtx = document.getElementById('histogramChart').getContext('2d');
         const polygonCtx = document.getElementById('polygonChart').getContext('2d');
+        const ogiveCtx = document.getElementById('ogiveChart').getContext('2d');
         const combinedCtx = document.getElementById('combinedChart').getContext('2d');
         
         // 1. Histogram Chart
@@ -248,7 +292,27 @@ document.addEventListener('DOMContentLoaded', function() {
             options: getChartOptions('Poligon Distribusi Frekuensi')
         });
         
-        // 3. Combined Chart
+        // 3. Ogive Chart
+        ogiveChart = new Chart(ogiveCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Frekuensi Kumulatif',
+                    data: cumulativeFrequencies,
+                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                    borderColor: tertiaryColor,
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true,
+                    pointBackgroundColor: tertiaryColor,
+                    pointRadius: 5
+                }]
+            },
+            options: getChartOptions('Ogive (Frekuensi Kumulatif)')
+        });
+        
+        // 4. Combined Chart
         combinedChart = new Chart(combinedCtx, {
             type: 'bar',
             data: {
@@ -271,10 +335,20 @@ document.addEventListener('DOMContentLoaded', function() {
                         tension: 0.3,
                         pointBackgroundColor: secondaryColor,
                         pointRadius: 5
+                    },
+                    {
+                        label: 'Ogive',
+                        data: cumulativeFrequencies,
+                        borderColor: tertiaryColor,
+                        borderWidth: 2,
+                        type: 'line',
+                        tension: 0.3,
+                        pointBackgroundColor: tertiaryColor,
+                        pointRadius: 5
                     }
                 ]
             },
-            options: getChartOptions('Kombinasi Histogram dan Poligon')
+            options: getChartOptions('Kombinasi Histogram, Poligon, dan Ogive')
         });
     }
     
@@ -322,12 +396,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load example data
     function loadExampleData() {
         const exampleData = [
-        96, 139, 112, 118, 94, 93, 142, 135,
-        136, 127, 88, 94, 132, 125, 119, 117,
-        107, 111, 143, 148, 127, 125, 125, 120,
-        117, 95, 155, 104, 103, 97, 113, 155,
-        106, 113, 156, 96, 103, 139, 124, 120,
-        108, 112, 134, 138, 89
+            96, 139, 112, 118, 94, 93, 142, 135,
+            136, 127, 88, 94, 132, 125, 119, 117,
+            107, 111, 143, 148, 127, 125, 125, 120,
+            117, 95, 155, 104, 103, 97, 113, 155,
+            106, 113, 156, 96, 103, 139, 124, 120,
+            108, 112, 134, 138, 89
         ];
         
         dataInput.value = exampleData.join(', ');
@@ -348,15 +422,28 @@ document.addEventListener('DOMContentLoaded', function() {
             polygonChart.destroy();
             polygonChart = null;
         }
+        if (ogiveChart) {
+            ogiveChart.destroy();
+            ogiveChart = null;
+        }
         if (combinedChart) {
             combinedChart.destroy();
             combinedChart = null;
         }
         
-        // Reset table
+        // Reset tables
         document.querySelector('#frequencyTable tbody').innerHTML = `
             <tr>
                 <td colspan="4" class="text-center text-muted py-5">
+                    <i class="bi bi-arrow-repeat fs-1 text-primary loading-icon"></i>
+                    <p class="mt-2">Data akan muncul setelah analisis</p>
+                </td>
+            </tr>
+        `;
+        
+        document.querySelector('#cumulativeTable tbody').innerHTML = `
+            <tr>
+                <td colspan="3" class="text-center text-muted py-5">
                     <i class="bi bi-arrow-repeat fs-1 text-primary loading-icon"></i>
                     <p class="mt-2">Data akan muncul setelah analisis</p>
                 </td>
@@ -375,8 +462,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Export table to CSV
-    function exportTableToCSV() {
-        const table = document.getElementById('frequencyTable');
+    function exportTableToCSV(tableId, filename) {
+        const table = document.getElementById(tableId);
         if (!table) return;
         
         const rows = table.querySelectorAll('tr');
@@ -411,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create download link
         const link = document.createElement('a');
         link.setAttribute('href', url);
-        link.setAttribute('download', 'distribusi_frekuensi.csv');
+        link.setAttribute('download', filename);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
