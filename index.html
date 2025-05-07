@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AztaoTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo-container animate__animated animate__fadeInLeft">
+                <img src="AztaoTech.png" alt="AztaoTech Logo" class="logo">
+            </div>
+            <div class="title-container animate__animated animate__fadeInDown">
+                <h1 class="title">
+                    <i class="bi bi-bar-chart-line me-2"></i>AztaoTech-Ti4H
+                </h1>
+                <p class="subtitle">Alat analisis tugas 2 statistik</p>
+            </div>
+            <div class="guide-btn-container animate__animated animate__fadeInRight">
+                <button id="infoBtn" class="btn btn-outline-light guide-btn">
+                    <i class="bi bi-info-circle"></i> Panduan
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="wave-divider">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#0d6efd"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#0d6efd"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#0d6efd"></path>
+        </svg>
+    </div>
+</header>
+
+    <main class="container main-content">
+        <section class="card input-card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="bi bi-input-cursor-text me-2"></i>Input Data</h2>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <label for="dataInput" class="form-label">Masukkan data (pisahkan dengan koma atau spasi):</label>
+                    <textarea class="form-control" id="dataInput" rows="5" placeholder="Contoh: 139, 112, 118, 94, 93, 142..."></textarea>
+                </div>
+                <div class="button-group">
+                    <button id="calculateBtn" class="btn btn-primary">
+                        <i class="bi bi-calculator me-1"></i> Analisis Data
+                    </button>
+                    <button id="exampleBtn" class="btn btn-secondary">
+                        <i class="bi bi-clipboard-data me-1"></i> Contoh Data
+                    </button>
+                    <button id="resetBtn" class="btn btn-outline-danger">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="resultsSection" class="results-section">
+            <div class="card stats-card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="bi bi-info-circle me-2"></i>Statistik Data</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 stats-grid">
+                        <div class="col-sm-6 col-md-4 col-lg-2">
+                            <div class="stat-item">
+                                <div class="stat-value" id="dataCount">0</div>
+                                <div class="stat-label">Jumlah Data</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-2">
+                            <div class="stat-item">
+                                <div class="stat-value" id="minValue">-</div>
+                                <div class="stat-label">Minimum</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-2">
+                            <div class="stat-item">
+                                <div class="stat-value" id="maxValue">-</div>
+                                <div class="stat-label">Maksimum</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-2">
+                            <div class="stat-item">
+                                <div class="stat-value" id="rangeValue">-</div>
+                                <div class="stat-label">Rentang</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-2">
+                            <div class="stat-item">
+                                <div class="stat-value" id="classCount">-</div>
+                                <div class="stat-label">Jumlah Kelas</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-2">
+                            <div class="stat-item">
+                                <div class="stat-value" id="classWidth">-</div>
+                                <div class="stat-label">Panjang Kelas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card table-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="card-title"><i class="bi bi-table me-2"></i>Tabel Distribusi Frekuensi</h2>
+                    <button id="exportBtn" class="btn btn-sm btn-light export-btn">
+                        <i class="bi bi-download me-1"></i> Export
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="frequencyTable">
+                            <thead>
+                                <tr>
+                                    <th>Interval Kelas</th>
+                                    <th>Titik Tengah</th>
+                                    <th>Frekuensi</th>
+                                    <th>Frekuensi Relatif (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-5">
+                                        <i class="bi bi-arrow-repeat fs-1 text-primary loading-icon"></i>
+                                        <p class="mt-2">Data akan muncul setelah analisis</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card chart-card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="bi bi-graph-up me-2"></i>Visualisasi Data</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="chartTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="histogram-tab" data-bs-toggle="tab" data-bs-target="#histogram" type="button" role="tab">
+                                <i class="bi bi-bar-chart me-1"></i> Histogram
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="polygon-tab" data-bs-toggle="tab" data-bs-target="#polygon" type="button" role="tab">
+                                <i class="bi bi-graph-up me-1"></i> Poligon
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="combined-tab" data-bs-toggle="tab" data-bs-target="#combined" type="button" role="tab">
+                                <i class="bi bi-layers me-1"></i> Kombinasi
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="chartTabContent">
+                        <div class="tab-pane fade show active" id="histogram" role="tabpanel">
+                            <div class="chart-container">
+                                <canvas id="histogramChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="polygon" role="tabpanel">
+                            <div class="chart-container">
+                                <canvas id="polygonChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="combined" role="tabpanel">
+                            <div class="chart-container">
+                                <canvas id="combinedChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+       <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-info-circle me-2"></i>Panduan Penggunaan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ol>
+                        <li>Masukkan data numerik (pisahkan dengan koma atau spasi)</li>
+                        <li>Klik tombol <strong>"Analisis Data"</strong> untuk memproses</li>
+                        <li>Gunakan <strong>"Contoh Data"</strong> untuk mencoba</li>
+                        <li>Hasil akan menampilkan:
+                            <ul>
+                                <li>Statistik dasar data</li>
+                                <li>Tabel distribusi frekuensi</li>
+                                <li>Visualisasi histogram dan poligon</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <div class="alert alert-info mt-3">
+                        <i class="bi bi-lightbulb"></i> <strong>Tip:</strong> Anda bisa mengekspor tabel ke CSV dengan tombol Export.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Mengerti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
