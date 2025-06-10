@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AztaoTech</title>
+    <title>AztaoTech - Analisis Statistik</title>
     <link rel="icon" href="AztaoTech.png" type="image/png">
     <link rel="manifest" href="manifest.json">
+    <!-- CSS Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="light-mode">
@@ -103,7 +105,7 @@
         </div>
 
         <section id="resultsSection" class="results-section">
-            <!-- Basic Stats Section -->
+            <!-- Enhanced Basic Stats Section -->
             <div class="card stats-card">
                 <div class="card-header">
                     <h2 class="card-title"><i class="bi bi-info-circle me-2"></i>Statistik Dasar</h2>
@@ -114,36 +116,42 @@
                             <div class="stat-item">
                                 <div class="stat-value" id="dataCount">0</div>
                                 <div class="stat-label">Jumlah Data</div>
+                                <i class="bi bi-123 stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="minValue">-</div>
                                 <div class="stat-label">Minimum</div>
+                                <i class="bi bi-arrow-down stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="maxValue">-</div>
                                 <div class="stat-label">Maksimum</div>
+                                <i class="bi bi-arrow-up stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="rangeValue">-</div>
                                 <div class="stat-label">Rentang</div>
+                                <i class="bi bi-arrows-angle-expand stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="meanValue">-</div>
                                 <div class="stat-label">Rata-rata</div>
+                                <i class="bi bi-calculator stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="medianValue">-</div>
                                 <div class="stat-label">Median</div>
+                                <i class="bi bi-gem stat-icon"></i>
                             </div>
                         </div>
                     </div>
@@ -152,36 +160,42 @@
                             <div class="stat-item">
                                 <div class="stat-value" id="modusValue">-</div>
                                 <div class="stat-label">Modus</div>
+                                <i class="bi bi-star stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="stdDevValue">-</div>
                                 <div class="stat-label">Standar Deviasi</div>
+                                <i class="bi bi-graph-up-arrow stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="varianceValue">-</div>
                                 <div class="stat-label">Varians</div>
+                                <i class="bi bi-graph-up stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="classCount">-</div>
                                 <div class="stat-label">Jumlah Kelas</div>
+                                <i class="bi bi-collection stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="classWidth">-</div>
                                 <div class="stat-label">Panjang Kelas</div>
+                                <i class="bi bi-rulers stat-icon"></i>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
                             <div class="stat-item">
                                 <div class="stat-value" id="sumValue">-</div>
                                 <div class="stat-label">Total</div>
+                                <i class="bi bi-calculator-fill stat-icon"></i>
                             </div>
                         </div>
                     </div>
@@ -434,10 +448,11 @@
         </div>
     </div>
 
+    <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
