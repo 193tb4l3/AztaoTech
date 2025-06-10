@@ -318,25 +318,50 @@ body.dark-mode {
     display: none;
 }
 
-/* Stats Grid */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
+/* Stats Card Styles */
+.stats-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    border: none;
+    overflow: hidden;
+}
+
+.stats-card .card-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    border-bottom: none;
+    padding: 1.25rem 1.5rem;
+}
+
+.stats-card .card-title {
+    font-weight: 600;
+    margin-bottom: 0;
+    font-size: 1.25rem;
+}
+
+.stats-card .card-body {
+    padding: 1.5rem;
 }
 
 .stat-item {
-    background-color: rgba(13, 110, 253, 0.05);
-    border-radius: 0.5rem;
-    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    padding: 1.25rem;
     text-align: center;
+    height: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .stat-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    background-color: rgba(13, 110, 253, 0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .stat-value {
@@ -351,12 +376,33 @@ body.dark-mode {
 }
 
 .stat-label {
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
 }
 
 .dark-mode .stat-label {
     color: #adb5bd;
+}
+
+.stat-icon {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+.dark-mode .stat-icon {
+    color: #adb5bd;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
 }
 
 /* Table Styles */
@@ -480,6 +526,18 @@ body.dark-mode {
     .header-actions {
         margin-top: 1rem;
     }
+    
+    .stat-item {
+        padding: 1rem;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -517,6 +575,14 @@ body.dark-mode {
     
     .logo {
         height: 40px;
+    }
+    
+    .stat-value {
+        font-size: 1.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
     }
 }
 
@@ -565,4 +631,4 @@ body.dark-mode {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #0b5ed7;
-}
+    }
